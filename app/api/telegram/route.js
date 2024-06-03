@@ -8,10 +8,11 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 console.log("Token: " + token);
 const bot = new TelegramBot(token, { polling: true });
 
-bot.on('message', (msg) => {
-    console.log("message");
+bot.on('message', async (msg) => {
+    console.log("message: ", msg);
     const chatId = msg.chat.id;
-    bot.sendMessage(chatId, 'Received your message: ' + msg.text);
+    await bot.sendMessage(chatId, 'Received your message: ' + msg.text);
+    console.log("Msg sent successfully");
 });
 
 const readStream = async (stream) => {
@@ -26,7 +27,6 @@ export async function POST(req, res) {
     // Process incoming updates from Telegram
     const body = await readStream(req.body);
     const parsedBody = JSON.parse(body);
-    console.log("Readable Stream");
 
     console.log("Incoming Message: ", parsedBody);
 
