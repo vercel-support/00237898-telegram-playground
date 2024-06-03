@@ -9,10 +9,14 @@ console.log("Token: " + token);
 const bot = new TelegramBot(token, { polling: true });
 
 bot.on('message', async (msg) => {
-    console.log("message: ", msg);
-    const chatId = msg.chat.id;
-    await bot.sendMessage(chatId, 'Received your message: ' + msg.text);
-    console.log("Msg sent successfully");
+    try {
+        console.log("message: ", msg);
+        const chatId = msg.chat.id;
+        await bot.sendMessage(chatId, 'Received your message: ' + msg.text);
+        console.log("Msg sent successfully");
+    } catch (error) {
+        console.log("Try Catch error - on-messge", error);
+    }
 });
 
 const readStream = async (stream) => {
