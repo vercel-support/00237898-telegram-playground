@@ -5,6 +5,7 @@ console.log(`webhookUrl: https://${process.env.VERCEL_URL}/api/telegram`);
 
 import { NextResponse } from 'next/server';
 const bot = require('../../lib/telegram-bot.js');
+const { IncomingMessage } = require('http');
 
 const readStream = async (stream) => {
   const chunks = [];
@@ -13,6 +14,10 @@ const readStream = async (stream) => {
   }
   return Buffer.concat(chunks).toString();
 };
+
+function isReadableStream(obj) {
+  return obj instanceof IncomingMessage && typeof obj.read === 'function';
+}
 
 
 export async function POST(req, res) {
