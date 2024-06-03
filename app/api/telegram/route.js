@@ -17,14 +17,14 @@ const readStream = async (stream) => {
 
 export async function POST(req, res) {
     // Process incoming updates from Telegram
-  //   const { body } = req;
-  //   console.log("Incoming Message:", body);
-
-  //    // Process the update with node-telegram-bot-api
-  //  await bot.processUpdate(body);
-
-    const body = await readStream(req.body);
-    const parsedBody = JSON.parse(body);
+    let parsedBody = '';
+    
+    if (isReadableStream(req.body)) {
+      const body = await readStream(req.body);
+      parsedBody = JSON.parse(body);
+    } else {
+      parsedBody = req.body; // assuming body-parser has already parsed the body
+    }
     console.log("Incoming Message:", parsedBody);
 
     // Process the update with node-telegram-bot-api
