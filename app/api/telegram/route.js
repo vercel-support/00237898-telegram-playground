@@ -1,8 +1,5 @@
 require('dotenv').config();
 
-console.log(`Token: ${process.env.TELEGRAM_BOT_TOKEN}`);
-console.log(`webhookUrl: https://${process.env.VERCEL_URL}/api/telegram`);
-
 import { NextResponse } from 'next/server';
 const bot = require('../../lib/telegram-bot.js');
 const { IncomingMessage } = require('http');
@@ -27,10 +24,12 @@ export async function POST(req, res) {
     if (isReadableStream(req.body)) {
       const body = await readStream(req.body);
       parsedBody = JSON.parse(body);
+      console.log("Readable Stream");
     } else {
       parsedBody = req.body; // assuming body-parser has already parsed the body
+      console.log("Parsed Object");
     }
-    console.log("Incoming Message:", parsedBody);
+    console.log("Incoming Message: ", parsedBody);
 
     // Process the update with node-telegram-bot-api
     bot.processUpdate(parsedBody);
