@@ -1,7 +1,18 @@
 require('dotenv').config();
-
 import { NextResponse } from 'next/server';
-const bot = require('../../lib/telegram-bot.js');
+const TelegramBot = require('node-telegram-bot-api');
+
+const token = process.env.TELEGRAM_BOT_TOKEN;
+
+// Create a bot instance
+console.log("Token: " + token);
+const bot = new TelegramBot(token, { polling: true });
+
+bot.on('message', (msg) => {
+    console.log("message");
+    const chatId = msg.chat.id;
+    bot.sendMessage(chatId, 'Received your message: ' + msg.text);
+});
 
 const readStream = async (stream) => {
   const chunks = [];
@@ -10,7 +21,6 @@ const readStream = async (stream) => {
   }
   return Buffer.concat(chunks).toString();
 };
-
 
 export async function POST(req, res) {
     // Process incoming updates from Telegram
