@@ -2,7 +2,6 @@ require('dotenv').config();
 
 import { NextResponse } from 'next/server';
 const bot = require('../../lib/telegram-bot.js');
-const { IncomingMessage } = require('http');
 
 const readStream = async (stream) => {
   const chunks = [];
@@ -12,23 +11,13 @@ const readStream = async (stream) => {
   return Buffer.concat(chunks).toString();
 };
 
-function isReadableStream(obj) {
-  return obj instanceof IncomingMessage && typeof obj.read === 'function';
-}
-
 
 export async function POST(req, res) {
     // Process incoming updates from Telegram
-    let parsedBody = '';
-    
-    if (isReadableStream(req.body)) {
-      const body = await readStream(req.body);
-      parsedBody = JSON.parse(body);
-      console.log("Readable Stream");
-    } else {
-      parsedBody = req.body; // assuming body-parser has already parsed the body
-      console.log("Parsed Object");
-    }
+    const body = await readStream(req.body);
+    const parsedBody = JSON.parse(body);
+    console.log("Readable Stream");
+
     console.log("Incoming Message: ", parsedBody);
 
     // Process the update with node-telegram-bot-api
