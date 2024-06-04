@@ -6,7 +6,7 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 
 // Create a bot instance
 console.log("Token: " + token);
-const bot = new TelegramBot(token, { 'webHook': { 'autoOpen': true, 'host': '00237898-telegram-playground.preview.vercel-support.app' } });
+const bot = new TelegramBot(token, { 'webHook': true });
 bot.setWebHook('https://00237898-telegram-playground.preview.vercel-support.app/api/telegram');
 
 bot.on('message', async (msg) => {
