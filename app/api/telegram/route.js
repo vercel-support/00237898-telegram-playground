@@ -45,7 +45,9 @@ export async function POST(req, res) {
     bot.processUpdate(parsedBody);
 
     // Send a response back to acknowledge receipt of the update
-    return NextResponse.json({ message: "Received POST", data: parsedBody });
+    setTimeout(() => {
+        return NextResponse.json({ message: "Received POST", data: parsedBody });
+    }, 14000);
 }
 
 
