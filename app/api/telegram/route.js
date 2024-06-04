@@ -44,10 +44,13 @@ export async function POST(req, res) {
     // Process the update with node-telegram-bot-api
     bot.processUpdate(parsedBody);
 
-    // Send a response back to acknowledge receipt of the update
-    setTimeout(() => {
-        return NextResponse.json({ message: "Received POST", data: parsedBody });
-    }, 14000);
+
+    return await new Promise((resolve, reject) => {
+        setTimeout(() => {
+            // Send a response back to acknowledge receipt of the update
+            resolve(NextResponse.json({ message: "Received POST", data: parsedBody }));
+        }, 14000);
+    })
 }
 
 
