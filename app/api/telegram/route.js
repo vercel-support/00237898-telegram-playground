@@ -7,6 +7,7 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 // Create a bot instance
 console.log("Token: " + token);
 const bot = new TelegramBot(token, { polling: true });
+bot.setWebHook(process.env.VERCEL_URL + '/api/telegram');
 
 bot.on('message', async (msg) => {
     try {
