@@ -6,8 +6,8 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 
 // Create a bot instance
 console.log("Token: " + token);
-const bot = new TelegramBot(token, { polling: true });
-bot.setWebHook(process.env.VERCEL_URL + '/api/telegram');
+const bot = new TelegramBot(token, { 'webHook': { 'autoOpen': true, 'host': 'https://00237898-telegram-playground.preview.vercel-support.app' } });
+bot.setWebHook('https://00237898-telegram-playground.preview.vercel-support.app/api/telegram');
 
 bot.on('message', async (msg) => {
     try {
@@ -21,11 +21,11 @@ bot.on('message', async (msg) => {
 });
 
 const readStream = async (stream) => {
-  const chunks = [];
-  for await (const chunk of stream) {
-      chunks.push(chunk);
-  }
-  return Buffer.concat(chunks).toString();
+    const chunks = [];
+    for await (const chunk of stream) {
+        chunks.push(chunk);
+    }
+    return Buffer.concat(chunks).toString();
 };
 
 export async function POST(req, res) {
@@ -38,7 +38,7 @@ export async function POST(req, res) {
     // Process the update with node-telegram-bot-api
     bot.processUpdate(parsedBody);
 
-     // Send a response back to acknowledge receipt of the update
+    // Send a response back to acknowledge receipt of the update
     return NextResponse.json({ message: "Received POST", data: parsedBody });
 }
 
