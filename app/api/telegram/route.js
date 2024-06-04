@@ -13,8 +13,12 @@ bot.on('message', async (msg) => {
     try {
         console.log("message: ", msg);
         const chatId = msg.chat.id;
-        await bot.sendMessage(chatId, 'Received your message: ' + msg.text);
-        console.log("Msg sent successfully");
+        try {
+            const message = await bot.sendMessage(chatId, 'Received your message: ' + msg.text);
+            console.log("Msg sent successfully ", message);
+        } catch (error) {
+            console.error("Error sending message: ", error);
+        }
     } catch (error) {
         console.log("Try Catch error - on-messge", error);
     }
