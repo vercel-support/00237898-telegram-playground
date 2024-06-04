@@ -13,21 +13,6 @@ const webhookURL = 'https://00237898-telegram-playground.preview.vercel-support.
 
 const apiURL = `https://api.telegram.org/bot${token}`;
 
-bot.on('message', async (msg) => {
-    try {
-        console.log("message: ", msg);
-        const chatId = msg.chat.id;
-        try {
-            const message = await bot.sendMessage(chatId, 'Received your message: ' + msg.text);
-            console.log("Msg sent successfully ", message);
-        } catch (error) {
-            console.error("Error sending message: ", error);
-        }
-    } catch (error) {
-        console.log("Try Catch error - on-messge", error);
-    }
-});
-
 const readStream = async (stream) => {
     const chunks = [];
     for await (const chunk of stream) {
