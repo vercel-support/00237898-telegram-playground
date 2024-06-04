@@ -4,9 +4,11 @@ const TelegramBot = require('node-telegram-bot-api');
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 
+export const runtime = 'edge';
+
 // Create a bot instance
 console.log("Token: " + token);
-const bot = new TelegramBot(token);
+const bot = new TelegramBot(token, { polling: true });
 bot.setWebHook('https://00237898-telegram-playground.preview.vercel-support.app/api/telegram');
 
 bot.on('message', async (msg) => {
