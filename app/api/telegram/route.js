@@ -8,8 +8,10 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 
 // Create a bot instance
 console.log("Token: " + token);
-const bot = new TelegramBot(token, { polling: true });
-bot.setWebHook('https://00237898-telegram-playground.preview.vercel-support.app/api/telegram');
+const webhookURL = 'https://00237898-telegram-playground.preview.vercel-support.app/api/telegram';
+// bot.setWebHook(webhookURL);
+
+const apiURL = `https://api.telegram.org/bot${token}`;
 
 bot.on('message', async (msg) => {
     try {
@@ -41,19 +43,36 @@ export async function POST(req, res) {
 
     console.log("Incoming Message: ", parsedBody);
 
-    // Process the update with node-telegram-bot-api
-    bot.processUpdate(parsedBody);
+    return new Promise((resolve, reject) => {
+        const bot = new TelegramBot(token);
+        bot.on('message', async (msg) => {
+            try {
+                console.log("message: ", msg);
+                const chatId = msg.chat.id;
+                try {
+                    const message = await bot.sendMessage(chatId, 'Received your message: ' + msg.text);
+                    console.log("Msg sent successfully ", message);
+                    resolve(NextResponse.json({ message: "Received POST", data: parsedBody }));
+                } catch (error) {
+                    console.error("Error sending message: ", error);
+                    reject();
+                }
+            } catch (error) {
+                console.log("Try Catch error - on-messge", error);
+                reject();
+            }
+        });
 
-
-    return await new Promise((resolve) => {
-        setTimeout(() => {
-            // Send a response back to acknowledge receipt of the update
-            resolve(NextResponse.json({ message: "Received POST", data: parsedBody }));
-        }, 14000);
-    })
+        // Process the update with node-telegram-bot-api
+        bot.processUpdate(parsedBody);
+    });
 }
 
 
 export async function GET(req) {
+    await fetch(apiURL + '/setWebhook', {
+        method: 'POST',
+        body: JSON.stringify({ url: webhookURL }),
+    });
     return NextResponse.json({ message: "GET request received, but this endpoint is for POST requests." });
 }
